@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: 05_NETH_MESABOTH_SPRING_DATA_JPA_HOMEWORK
+
+  datasource:
+    #    driver-class-name: org.postgresql.Driver
+    #    url: jdbc:postgresql://localhost:5433/postgres
+    #    username: postgres
+    #    password: 1122334455
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 085760561Both
+
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect

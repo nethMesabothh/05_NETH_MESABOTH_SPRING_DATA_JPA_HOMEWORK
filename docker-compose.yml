@@ -1,0 +1,88 @@
+services:
+  db:
+    image: postgres
+    container_name: postgres-container
+    environment:
+      POSTGRES_DB: postgres-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1122334455
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+
+  api:
+    build: .
+    container_name: spring-api-container
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres-db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1122334455
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  # Keycloak for DB
+#  keycloak-db:
+#    image: postgres
+#    container_name: keycloak-db-container
+#    environment:
+#      POSTGRES_DB: db-keycloak
+#      POSTGRES_USER: keycloak
+#      POSTGRES_PASSWORD: 123
+#    volumes:
+#      - keycloak_data:/var/lib/postgresql/data
+#    ports:
+#      - "5434:5432"
+#    restart: unless-stopped
+
+#  keycloak:
+#    image: quay.io/keycloak/keycloak:21.1
+#    container_name: keycloak-container
+#    command: ['start-dev']
+#    environment:
+#      KC_DB: postgres
+#      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
+#      KC_DB_USERNAME: keycloak
+#      KC_DB_PASSWORD: 123
+#      KEYCLOAK_ADMIN: admin
+#      KEYCLOAK_ADMIN_PASSWORD: 123
+#    depends_on:
+#      - keycloak-db
+#    ports:
+#      - "8080:8080"
+#      - "8443:8080"
+#    restart: unless-stopped
+
+  # RabbitMQ
+#  rabbitmq:
+#    image: rabbitmq:3.12-management
+#    container_name: rabbitmq-container
+#    ports:
+#      - "15672:15672"
+#    restart: unless-stopped
+#
+#  # MinIO
+#  minio:
+#    image: minio/minio
+#    container_name: minio-container
+#    command: server /data --console-address ":9001"
+#    environment:
+#      MINIO_ROOT_USER: admin
+#      MINIO_ROOT_PASSWORD: admin123
+#    volumes:
+#      - minio_data:/data
+#    ports:
+#      - "9090:9000"
+#      - "9091:9001"
+#    restart: unless-stopped
+
+# Volumes
+volumes:
+  db_data:
+#  keycloak_data:
+#  minio_data:
