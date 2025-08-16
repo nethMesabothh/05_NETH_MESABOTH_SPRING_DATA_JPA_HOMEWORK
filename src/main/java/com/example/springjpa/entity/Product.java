@@ -1,5 +1,7 @@
 package com.example.springjpa.entity;
 
+import com.example.springjpa.dto.payload.CustomerPayload;
+import com.example.springjpa.dto.payload.ProductPayload;
 import lombok.*;
 import jakarta.persistence.*;
 
@@ -15,7 +17,7 @@ public class Product {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long product_id;
+  private Long productId;
 
   private String name;
 
@@ -26,5 +28,14 @@ public class Product {
 
   @OneToMany(mappedBy = "product")
   private List<OrderItem> orderItems;
+
+  public ProductPayload toResponse() {
+    return new ProductPayload(
+            this.productId,
+            this.name,
+            this.unitPrice,
+            this.description
+    );
+  }
 
 }

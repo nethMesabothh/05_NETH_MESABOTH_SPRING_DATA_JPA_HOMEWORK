@@ -1,11 +1,14 @@
 package com.example.springjpa.entity;
 
+import com.example.springjpa.dto.payload.OrderPayload;
 import com.example.springjpa.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -34,7 +37,20 @@ public class Order {
   @JoinColumn(name = "customer_id", nullable = false)
   private Customer customer;
 
-  @OneToMany(mappedBy = "order")
-  private List<OrderItem> orderItems;
+  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<OrderItem> orderItems = new ArrayList<>();
+
+  public OrderPayload toResponse() {
+    return new OrderPayload(
+            this.orderId,
+            this.orderDate,
+            this.totalAmount,
+            this.status,
+            this.customer != null ? this.customer.toResponse() : null,
+            this.orderItems != null
+                    ? this.orderItems.stream().map(OrderItem::toResponse).toList()
+                    : Collections.emptyList()
+    );
+  }
 
 }

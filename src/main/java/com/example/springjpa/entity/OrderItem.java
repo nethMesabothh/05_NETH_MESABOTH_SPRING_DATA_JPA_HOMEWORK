@@ -1,5 +1,6 @@
 package com.example.springjpa.entity;
 
+import com.example.springjpa.dto.payload.ProductPayload;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,5 +26,14 @@ public class OrderItem {
   private Product product;
 
   private Integer quantity;
+
+  public ProductPayload toResponse() {
+    return new ProductPayload(
+            this.product.getProductId(),
+            this.product.getName(),
+            this.product.getUnitPrice(),
+            this.product.getDescription()
+    );
+  }
 
 }
