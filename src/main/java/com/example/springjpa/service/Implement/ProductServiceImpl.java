@@ -35,7 +35,7 @@ public class ProductServiceImpl implements IProductService {
 
     Product product = productRequest.toEntity();
 
-    return new APIProductResponse<>("Fetch Custom Successfully", productRepository.save(product).toResponse(), HttpStatus.OK, LocalDateTime.now());
+    return new APIProductResponse<>("Product create successfully!", productRepository.save(product).toResponse(), HttpStatus.OK, LocalDateTime.now());
   }
 
   @Override
@@ -43,7 +43,7 @@ public class ProductServiceImpl implements IProductService {
     Page<Product> products = productRepository.findAll(PageRequest.of(page - 1, size, Sort.by(direction, sort.getField())));
 
     Page<ProductPayload> productPayloads = products.map(Product::toResponse);
-    return new APIProductResponse<>("Fetch Custom Successfully", new PagedPayload<>(productPayloads), HttpStatus.OK, LocalDateTime.now());
+    return new APIProductResponse<>("Fetch all products Successfully!", new PagedPayload<>(productPayloads), HttpStatus.OK, LocalDateTime.now());
 
   }
 
@@ -55,13 +55,13 @@ public class ProductServiceImpl implements IProductService {
       throw new NotFoundException("product " + id + " not found!");
     }
 
-    return new APIProductResponse<>("Fetch Product Successfully", product.toResponse(), HttpStatus.OK, LocalDateTime.now());
+    return new APIProductResponse<>("Fetch product " + id + " Successfully!", product.toResponse(), HttpStatus.OK, LocalDateTime.now());
   }
 
   @Override
   public APIProductResponse<ProductPayload> updateProductById(APIProductRequest productRequest, Long id) {
     Product existingProduct = productRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Customer " + id + " not found!"));
+            .orElseThrow(() -> new NotFoundException("Product " + id + " not found!"));
 
 
     Product updateProduct = productRequest.toUpdateEntity(existingProduct);
@@ -75,11 +75,11 @@ public class ProductServiceImpl implements IProductService {
   @Override
   public String deleteProductById(Long id) {
     Product existingProduct = productRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Customer " + id + " not found!"));
+            .orElseThrow(() -> new NotFoundException("Product " + id + " not found!"));
 
     productRepository.delete(existingProduct);
 
-    return "Customer Deleted!";
+    return "Product deleted successfully!";
   }
 
 

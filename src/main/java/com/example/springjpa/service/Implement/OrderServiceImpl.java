@@ -74,7 +74,7 @@ public class OrderServiceImpl implements IOrderService {
     Order savedOrder = orderRepository.save(order);
 
 
-    return new APIOrderResponse<>("Order created successfully", savedOrder.toResponse(), HttpStatus.CREATED, LocalDateTime.now());
+    return new APIOrderResponse<>("Order create successfully", savedOrder.toResponse(), HttpStatus.CREATED, LocalDateTime.now());
   }
 
   @Override
